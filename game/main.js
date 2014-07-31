@@ -1,4 +1,4 @@
-var game = new Phaser.Game(288, 505, Phaser.AUTO, 'flappy-bird-reborn');
+var game = new Phaser.Game(1200, 800, Phaser.AUTO, 'teddy');
 
 // Game States
 game.state.add('boot', Boot);
