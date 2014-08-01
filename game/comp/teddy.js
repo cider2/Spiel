@@ -8,19 +8,23 @@ function Teddy(game, x, y, frame) {
 
   /// set the sprite's anchor to the center
   this.anchor.setTo(0.5, 0.5);
- 
+   this.startPos = {
+    x:900,
+    y:600,
+    rotation:0
+  };
 
-  //this.game.physics.arcade.enable(this);
-  this.game.physics.enable(this, Phaser.Physics.P2JS);
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
   //this.game.physics.p2.enable(this);
   this.body.collideWorldBounds = true;
 
   this.body.height = 100;
-  this.body.width = 60;
+  this.body.width = 28;
   this.speed = 200;
 
   this.walkAnim = this.animations.add('walk');
-  
+  //this.body.kinematic = false;
+  //this.body.motionState = Phaser.Physics.P2.Body.DYNAMIC;
 
 }
 
@@ -77,7 +81,7 @@ Teddy.prototype.doNothing = function() {
 
 
 Teddy.prototype.jump = function() {
-		this.body.velocity.y = -300;	
+		this.body.velocity.y = -300;
 },
 
 Teddy.prototype.crouch = function() {
