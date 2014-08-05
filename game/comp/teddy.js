@@ -8,11 +8,14 @@ function Teddy(game, x, y, frame) {
 
   /// set the sprite's anchor to the center
   this.anchor.setTo(0.5, 0.5);
-   this.startPos = {
+  /* this.startPos = {
     x:900,
     y:600,
     rotation:0
   };
+  */
+  this.x = 500;
+  this.y = 5000;
 
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   //this.game.physics.p2.enable(this);
@@ -23,6 +26,7 @@ function Teddy(game, x, y, frame) {
   this.speed = 200;
 
   this.walkAnim = this.animations.add('walk');
+  this.climbAnim = this.animations.add('climb');
   //this.body.kinematic = false;
   //this.body.motionState = Phaser.Physics.P2.Body.DYNAMIC;
 
@@ -49,7 +53,6 @@ Teddy.prototype.goLeft = function() {
 
 Teddy.prototype.goRight = function() {
 	 this.body.velocity.x = this.speed;
-	 
 
           if (facing != 'right') {
          	 this.walkAnim.play(10,true);	
@@ -58,9 +61,33 @@ Teddy.prototype.goRight = function() {
 
 },
 
+Teddy.prototype.climbUp = function() {
+	 this.body.velocity.y = -this.speed;
+	 
+          if (facing != 'up') {
+         	 this.climbAnim.play(10,true);	
+            facing = 'up';
+          }
+
+},
+
+Teddy.prototype.climbDown = function() {
+	 this.body.velocity.y = this.speed;
+	 
+          if (facing != 'down') {
+         	 this.climbAnim.play(10,true);	
+            facing = 'down';
+          }
+
+},
+
+
 Teddy.prototype.doNothing = function() {
 
 	this.body.velocity.x = 0;
+	if (isLadder) {
+		this.body.velocity.y = 0;
+	}
 
         if (facing != 'idle') {
             this.animations.stop();
@@ -83,6 +110,11 @@ Teddy.prototype.doNothing = function() {
 Teddy.prototype.jump = function() {
 		this.body.velocity.y = -300;
 },
+
+Teddy.prototype.changeVelocity= function(y) {
+		this.body.velocity.y = y;
+},
+
 
 Teddy.prototype.crouch = function() {
 

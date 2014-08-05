@@ -13,6 +13,10 @@
       this.load.image('teddy', "assets/sprite.png");
       this.game.load.spritesheet("teddy", "assets/teddy_100x100.png", 100,100,1);
 
+     // this.game.load.tilemap('testmap', 'assets/test-map.json', null, Phaser.Tilemap.TILED_JSON);
+      this.game.load.tilemap('laddermap', 'assets/laddertest.json', null, Phaser.Tilemap.TILED_JSON);
+      //this.load.image('test_tileset', "assets/test_tiles.png");
+
     },
 
     create: function() {
