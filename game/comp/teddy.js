@@ -18,7 +18,7 @@ function Teddy(game, x, y, frame) {
   };
   */
   this.x = 500;
-  this.y = 500;
+  this.y = 1000;
 
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   //this.game.physics.p2.enable(this);

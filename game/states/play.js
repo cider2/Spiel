@@ -20,7 +20,7 @@ Play.prototype = {
   create: function() {
 
       //this.tilemap = this.game.add.tilemap('level1');
-      this.tilemap = this.game.add.tilemap('laddermap');
+      this.tilemap = this.game.add.tilemap('level1');
       this.tilemap.addTilesetImage("tileset");
       //this.tilemap.setCollision([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,619]);
 
@@ -28,15 +28,16 @@ Play.prototype = {
       //this.laddermap.addTilesetImage("test_tileset");
 
       //this.tilemap.setTileIndexCallback(8, this.hitFinishingLine, this);
-      this.layer = this.tilemap.createLayer('tilelayer1');
-      this.ladderLayer = this.tilemap.createLayer('ladderlayer');
+      //this.layer = this.tilemap.createLayer('tilelayer1');
+      this.layer = this.tilemap.createLayer('worldlayer');
+  //    this.ladderLayer = this.tilemap.createLayer('ladderlayer');
       this.layer.resizeWorld();
-      this.ladderLayer.resizeWorld();
-      
+ //     this.secretLayer = this.tilemap.createLayer('secretlayer');
+//      this.ladderLayer.resizeWorld();
       
 
 
-      this.tilemap.setCollisionByExclusion([592,593,619,620,646,647],true,this.layer);
+      this.tilemap.setCollisionByExclusion([530,531,557,558,584,585],true,this.layer);
 
       // P2 stuff
       //this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -85,12 +86,18 @@ Play.prototype = {
       this.tilemap.currentLayer = this.tilemap.getLayer(this.ladderLayer);
       try { 
 
-        if (  this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 592 ||
-              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 593 ||
-              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 619 ||
-              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 620 ||
-              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 647 ||
-              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 647 
+        if (  this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 530 ||
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 531 ||
+              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 532 ||
+              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 533 ||
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 557 ||
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 558 ||
+              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 559 ||
+              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 560 ||
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 584 ||
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 585 
+              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 586 ||
+              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).indsex == 587
 
            ) {
 
@@ -99,14 +106,7 @@ Play.prototype = {
             this.player.speedX = 50;
             
             //this.tilemap.setCollisionByExclusion([],false);
-         /*   var v = this.tilemap.getTileWorldXY(this.player.x,this.player.y).x;
-            var w = this.tilemap.getTileWorldXY(this.player.x,this.player.y).y;
-            
-            this.tilemap.setCollision(this.tilemap.getTileBelow(0, v, w).index, false);
-            this.tilemap.setCollision(this.tilemap.getTileAbove(0, v, w).index, false);
-            this.tilemap.setCollision(this.tilemap.getTileLeft(0, v, w).index, false);
-            this.tilemap.setCollision(this.tilemap.getTileRight(0, v, w).index, false);
-        */
+         
          
          }
 
@@ -114,7 +114,8 @@ Play.prototype = {
               isFalling = false;
             } else {
               isFalling = true;
-         } */
+         } 
+         */
 
       } catch (err) {
             this.game.physics.arcade.gravity.y = 500;
@@ -185,6 +186,7 @@ Play.prototype = {
               if (shootFacing == 'right') {
                   if (!this.player.justShot) {
                       this.player.shootRight(); 
+                      this.projectile = new Projectile(this.game, 0,0);
                   }
               } else if (shootFacing == 'left') {
                   if (!this.player.justShot) {
