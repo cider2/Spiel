@@ -2,6 +2,10 @@
 
 var isLadder = false;
 var firstTimeLadder = true;
+var isFalling = false;
+var isShooting = false;
+var firstTimeShooting = true;
+var justFired = true;
 
 function Play() {
 }
@@ -15,9 +19,8 @@ Play.prototype = {
 
   create: function() {
 
-      this.tilemap = this.game.add.tilemap('level1');
-      //this.tilemap.addTilesetImage("tileset");
-      //this.tilemap = this.game.add.tilemap('laddermap');
+      //this.tilemap = this.game.add.tilemap('level1');
+      this.tilemap = this.game.add.tilemap('laddermap');
       this.tilemap.addTilesetImage("tileset");
       //this.tilemap.setCollision([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,619]);
 
@@ -65,6 +68,7 @@ Play.prototype = {
 
       this.cursors = this.input.keyboard.createCursorKeys();
       this.spacebar = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+      this.ctrl = this.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
 
   },
 
@@ -78,32 +82,58 @@ Play.prototype = {
         this.player.speed = 200;
       }
       //this.game.physics.arcade.collide(this.ladderLayer,this.player,changeGravity());
-      //this.tilemap.currentLayer = this.tilemap.getLayer(this.ladderLayer);
+      this.tilemap.currentLayer = this.tilemap.getLayer(this.ladderLayer);
       try { 
+
         if (  this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 592 ||
               this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 593 ||
               this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 619 ||
               this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 620 ||
               this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 647 ||
               this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 647 
+
            ) {
+
             this.game.physics.arcade.gravity.y = 0;
-          if (firstTimeLadder) {
-            // this.player.body.velocity.x = 0;
-            firstTimeLadder = false;
-          }
             isLadder = true;
+            this.player.speedX = 50;
+            
+            //this.tilemap.setCollisionByExclusion([],false);
+         /*   var v = this.tilemap.getTileWorldXY(this.player.x,this.player.y).x;
+            var w = this.tilemap.getTileWorldXY(this.player.x,this.player.y).y;
+            
+            this.tilemap.setCollision(this.tilemap.getTileBelow(0, v, w).index, false);
+            this.tilemap.setCollision(this.tilemap.getTileAbove(0, v, w).index, false);
+            this.tilemap.setCollision(this.tilemap.getTileLeft(0, v, w).index, false);
+            this.tilemap.setCollision(this.tilemap.getTileRight(0, v, w).index, false);
+        */
+         
          }
+
+     /*    if (this.player.body.onFloor() || !isLadder) {
+              isFalling = false;
+            } else {
+              isFalling = true;
+         } */
+
       } catch (err) {
             this.game.physics.arcade.gravity.y = 500;
+          /*  if (isLadder) {
+              this.player.doNothing();
+            } */
             isLadder = false;
-            firstTimeLadder = true;
+            this.player.speedX = 200;
       }
 
-      //console.log(this.game.physics.arcade.gravity.y);
-      //console.log(this.tilemap.getTileWorldXY(this.player.x,this.player.y));
-      //console.log(this.tilemap.getTileWorldXY(this.player.x,this.player.y));
-      //console.log(this.tilemap.hasTile(1,1),this.ladderLayer);
+      if (!this.player.body.onFloor() && this.player.body.velocity.y > 0 && !isLadder) {
+         isFalling = true;
+      } else {
+         isFalling = false;
+      }
+      if (this.player.body.onFloor()) {
+        facing = shootFacing;
+      }
+
   },
 
 
@@ -111,45 +141,72 @@ Play.prototype = {
 
     //Tastaturereignisse abfragen und entsprechende Funktion aufrufen
    
-      
-       if (this.cursors.up.isDown) {
-          if (this.player.body.onFloor()) {
-            this.player.body.velocity.x = 0;
-          }
-          if (isLadder) {
-            //this.player.changeVelocity(-100);
-            this.player.climbUp();
-          }
-       } 
-
-       else if (this.cursors.down.isDown) {
-          if (this.player.body.onFloor()) {
-            this.player.body.velocity.x = 0;
-          }
-          if (isLadder) {
-            this.player.climbDown();
-            //this.player.changeVelocity(100);
-            //this.player.body.velocity.y = 300;
-          } else {
-            this.player.crouch();
-          }
-       } 
-
-       else if (this.cursors.left.isDown) {
+       if (this.cursors.left.isDown) {
           this.player.goLeft();
        }
        else if (this.cursors.right.isDown) {
           this.player.goRight();
        }
-       else  {
+      
+       else if (this.cursors.up.isDown) {
+          if (this.player.body.onFloor()) { //  && !this.cursors.left.isDown && !this.cursors.right.isDown
+            //this.player.body.velocity.x = 0;
+            this.player.doNothing();
+          }
+          if (isLadder) {
+            //this.player.changeVelocity(-100);
+            this.player.climbUp();
+          } else {
+            this.player.doNothing();
+          }
+       } 
+
+       else if (this.cursors.down.isDown) { //  && !this.cursors.left.isDown && !this.cursors.right.isDown
+          if (this.player.body.onFloor()) {
+              this.player.crouch();
+            //this.player.doNothing();
+          }
+          if (isLadder) {
+              this.player.climbDown();
+            //this.player.changeVelocity(100);
+            //this.player.body.velocity.y = 300;
+          } else if (isFalling) {
+              this.player.doNothing();
+          }
+       } 
+     
+       if (!(this.cursors.up.isDown || this.cursors.down.isDown || this.cursors.right.isDown || this.cursors.left.isDown)) {
           this.player.doNothing();
        }
-       if (this.spacebar.isDown && this.player.body.onFloor()) {
-          this.player.jump()
+
+       if (this.spacebar.isDown) {
+          if (hasWeapon) {
+              isShooting = true;
+              if (shootFacing == 'right') {
+                  this.player.shootRight();
+              } else if (shootFacing == 'left') {
+                  this.player.shootLeft();
+              }
+          } else {}
+        }
+       else {
+          if (firstTimeShooting) {
+            this.game.time.events.add(Phaser.Timer.SECOND * 1.5, this.stopShooting, this);
+            firstTimeShooting = false;
+          }
+       }
+
+       if (this.ctrl.isDown) {
+          this.player.jump();
        }
 
 
-  },
+  },  
+
+  stopShooting: function() {
+          isShooting = false;
+          firstTimeShooting = true;
+  }
 
 
 };
