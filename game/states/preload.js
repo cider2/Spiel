@@ -11,7 +11,7 @@
       this.game.load.tilemap('level1', 'assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
       this.load.image('tileset', "assets/tileset.png");
       //this.load.image('teddy', "assets/sprite.png");
-      this.game.load.spritesheet("teddy", "assets/spritesheet_v05.png", 100,100);
+      this.game.load.spritesheet("teddy", "assets/spritesheet_v07.png", 100,100);
       this.game.load.spritesheet("explosions", "assets/spritesheet_explosionen.png", 64,64);
       // this.game.load.spritesheet("teddy", "assets/teddy_100x100.png", 100,100,1);
 

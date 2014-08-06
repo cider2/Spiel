@@ -3,6 +3,7 @@ var facing = 'right';
 var shootFacing = 'right';
 var hasWeapon = true;
 var justFired = false;
+var justShot = false;
 
 function Teddy(game, x, y, frame) {  
   
@@ -247,22 +248,23 @@ Teddy.prototype.jump = function() {
 },
 
 Teddy.prototype.shootRight = function() {
-	console.log("ShootRight");
+	this.justShot = true;
+	this.muzzleFlash.x = this.body.x+52;
+	this.muzzleFlash.y = this.body.y+26;
 	this.muzzleFlash.alpha = 1.0;
-	if (!justFired) {
-		this.game.time.events.add(Phaser.Timer.SECOND * 0.01, this.hideMuzzleFlash, this);
-		justFired = true;
-	}
+	this.game.time.events.add(Phaser.Timer.SECOND * 0.02, this.hideMuzzleFlash, this);
 },
 
 Teddy.prototype.shootLeft = function() {
-	console.log("ShootLeft");
+	this.justShot = true;
+	this.muzzleFlash.x = this.body.x-52;
+	this.muzzleFlash.y = this.body.y+26;
+	this.muzzleFlash.alpha = 1.0;
+	this.game.time.events.add(Phaser.Timer.SECOND * 0.02, this.hideMuzzleFlash, this);
 },
 
 Teddy.prototype.hideMuzzleFlash = function() {
 	this.muzzleFlash.alpha = 0.0;
-	//this.game.time.events.add(Phaser.Timer.SECOND * 1, this.hideMuzzleFlash, this);
-	justFired = false;
 },
 
 

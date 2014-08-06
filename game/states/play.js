@@ -183,13 +183,18 @@ Play.prototype = {
           if (hasWeapon) {
               isShooting = true;
               if (shootFacing == 'right') {
-                  this.player.shootRight();
+                  if (!this.player.justShot) {
+                      this.player.shootRight(); 
+                  }
               } else if (shootFacing == 'left') {
-                  this.player.shootLeft();
+                  if (!this.player.justShot) {
+                    this.player.shootLeft();
+                  }
               }
-          } else {}
+          } 
         }
        else {
+          this.player.justShot = false;
           if (firstTimeShooting) {
             this.game.time.events.add(Phaser.Timer.SECOND * 1.5, this.stopShooting, this);
             firstTimeShooting = false;
