@@ -42,7 +42,7 @@
     },
 
     onLoadComplete: function() {
-        this.game.state.start('play_2');
+        this.game.state.start('play_1');
     }
 
   };

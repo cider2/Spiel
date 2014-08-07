@@ -290,7 +290,8 @@ Play_2.prototype = {
 //      this.deathplant3 = new Deathplant(this.game, 1200,200, this.p3, 'up', 1000);
       //this.deathplant4 = new Deathplant(this.game, 1400,200, this.p3, 'down', 200);
 
-   //   this.creep1 = new Creep(this.game, 1200,200, this.p3, 'left', 2, 500, 30);  
+      this.creep1 = new Creep(this.game, 1200,400, this.p3, 'left', 2, 500, 30);  
+      this.creep2 = new Creep(this.game, 1600,200, this.p3, 'left', 4, 250, 50);  
                                       //Parameter: Projektil, Ausrichtung, PatrolTime (Zeit bis zum Wechseln der Laufrichtung), Schussgeschwindigkeit, Leben
 
       this.dog1 = new Dog(this.game, 800,400, 'left', 1, 500, 10);
@@ -306,7 +307,8 @@ Play_2.prototype = {
       this.game.add.existing(this.deathplant2);   
    //   this.game.add.existing(this.deathplant3);   
    //   this.game.add.existing(this.deathplant4);   
-    //  this.game.add.existing(this.creep1);   
+      this.game.add.existing(this.creep1);   
+      this.game.add.existing(this.creep2);   
    //   this.game.add.existing(this.dog1);   
       this.game.add.existing(this.squatch1);   
       //this.game.add.existing(this.boss);   
@@ -317,7 +319,8 @@ Play_2.prototype = {
       this.enemies.push(this.deathplant2);
    //   this.enemies.push(this.deathplant3);
    //   this.enemies.push(this.deathplant4);
-   //   this.enemies.push(this.creep1);
+      this.enemies.push(this.creep1);
+      this.enemies.push(this.creep2);
       this.enemies.push(this.dog1);
       this.enemies.push(this.squatch1);
       //this.enemies.push(this.boss);
@@ -328,7 +331,7 @@ Play_2.prototype = {
       this.star2 = new Starsmall(this.game, 550, 100);
       this.star3 = new Starsmall(this.game, 600, 100);
       this.star4 = new Starsmall(this.game, 650, 100);
-      this.starBig1 = new Starbig(this.game, 1400, 100);
+      this.starBig1 = new Starbig(this.game, 2300, 100);
 
       // Add stars to game
       this.game.add.existing(this.star1); 
@@ -352,7 +355,8 @@ Play_2.prototype = {
   },
 
   win: function() {
-    if (this.player.x >= 2000) {
+    if (this.player.x >= 2300) {
+      this.resetPlayer();
       this.game.state.start('play_2');
     }
   }
