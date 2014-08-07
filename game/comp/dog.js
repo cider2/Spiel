@@ -34,6 +34,10 @@ Dog.prototype.constructor = Dog;
 
 Dog.prototype.update = function() {
 
+  if (this.health <= 0) {
+    this.killIt();
+  }
+
   if (!this.isKilled) {
     this.patroling();
   }

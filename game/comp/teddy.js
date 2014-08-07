@@ -56,8 +56,9 @@ Teddy.prototype.constructor = Teddy;
 
 Teddy.prototype.update = function() {
 
-
-
+	if (this.health <= 0) {
+		this.killIt();
+	}
 
 },
 
@@ -281,14 +282,14 @@ Teddy.prototype.killIt = function() {
   
   this.isKilled = true;
   this.animations.stop();
-  this.game.add.tween(picture).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-  this.game.time.events.add(Phaser.Timer.SECOND * 1.0, this.destroyIt, this);
+  this.game.add.tween('teddy').to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+  this.game.time.events.add(Phaser.Timer.SECOND * 2.0, this.destroyIt, this);
 },
 
 Teddy.prototype.destroyIt = function() {
   // make sprite invisible
-  this.kill();
+  //this.kill();
   // clear RAM
-  this.destroy();
-  this.game.state.start('play');
+//  this.destroy();
+  this.game.state.start('preload');
 }

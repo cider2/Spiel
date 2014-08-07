@@ -44,6 +44,10 @@ Squatch.prototype.constructor = Squatch;
 
 Squatch.prototype.update = function() {
 
+  if (this.health <= 0) {
+    this.killIt();
+  }
+
   if (!this.isKilled) {
     if (this.direction == 'right') {
       this.shootRight();

@@ -36,7 +36,7 @@ Play.prototype = {
 //      this.ladderLayer.resizeWorld();
 
       
-      this.tilemap.setCollisionByExclusion([530,531,557,558,584,585],true,this.layer);
+      this.tilemap.setCollisionByExclusion([530,531,532,533,557,558,559,560,584,885,886,887],true,this.layer);
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
       this.game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -55,7 +55,7 @@ Play.prototype = {
 
       this.p1 = new Projectile(this.game, 0,0, 1,'projectile1');
       this.p2 = new Projectile(this.game, 0,0, 2,'projectile2');
-      this.p3 = new Projectile(this.game, 0,0, 3,'projectile3');
+      this.p3 = new Projectile(this.game, 0,0, 3,'projectile3');  
       this.p4 = new Projectile(this.game, 0,0, 4,'projectile4');
       this.p5 = new Projectile(this.game, 0,0, 5,'projectile5');
       this.p6 = new Projectile(this.game, 0,0, 6,'projectile6');
@@ -67,6 +67,16 @@ Play.prototype = {
 
       this.addEnemies();
       this.enemies;
+
+      this.starScore = 0;
+      this.scoreString = 'Stars : ';
+      this.scoreText = this.game.add.text(30, 20, this.scoreString + this.starScore, { font: '32px Cooper Std', fill: '#ffff00', fontWeight: 1 });
+      this.scoreText.fixedToCamera = true;
+
+      this.healthString = 'Health : ';
+      this.healthText = this.game.add.text(760, 20, this.healthString + this.player.health, { font: '32px Cooper Std', fill: '#ffff00', fontWeight: 0 });
+      this.healthText.fixedToCamera = true;
+
 
   },
 
@@ -89,16 +99,16 @@ Play.prototype = {
 
         if (  this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 530 ||
               this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 531 ||
-              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 532 ||
-              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 533 ||
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 532 ||
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 533 ||
               this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 557 ||
               this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 558 ||
-              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 559 ||
-              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 560 ||
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 559 ||
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 560 ||
               this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 584 ||
-              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 585 
-              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 586 ||
-              //this.tilemap.getTileWorldXY(this.player.x,this.player.y).indsex == 587
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 585 ||
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 586 ||
+              this.tilemap.getTileWorldXY(this.player.x,this.player.y).index == 587
 
            ) {
 
@@ -134,6 +144,8 @@ Play.prototype = {
       }
 
       this.activateEnemies();
+      this.healthText.setText(this.healthString + this.player.health);
+      this.scoreText.setText(this.scoreString + this.starScore);
 
   },
 
@@ -309,6 +321,10 @@ Play.prototype = {
 
   activateEnemies: function() {
    // this.deathplant1.shootRight(this.deathplantBullets,this.p3);
+  },
+
+  collectStar: function() {
+    this.starScore++;
   }
 
 };

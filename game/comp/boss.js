@@ -27,6 +27,8 @@ function Boss(game, x, y, p, shootDelay, health, frame) {
 
   this.bulletTime = 1000;
 
+  this.isActivated = false;
+
   this.bossBullets = this.game.add.group();
   this.bossBullets.enableBody = true;
   this.bossBullets.physicsBodyType = Phaser.Physics.ARCADE;
@@ -45,7 +47,11 @@ Boss.prototype.constructor = Boss;
 
 Boss.prototype.update = function() {
 
-  if (!this.isKilled) {
+  if (this.health <= 0) {
+    this.killIt();
+  }
+
+  if (!this.isKilled && this.isActivated) {
       this.shootLeft();
   }
   
