@@ -57,6 +57,8 @@ Play.prototype = {
       this.p2 = new Projectile(this.game, 0,0, 2,'projectile2');
       this.p3 = new Projectile(this.game, 0,0, 3,'projectile3');
       this.p4 = new Projectile(this.game, 0,0, 4,'projectile4');
+      this.p5 = new Projectile(this.game, 0,0, 5,'projectile5');
+      this.p6 = new Projectile(this.game, 0,0, 6,'projectile6');
 
       //this.game.add.existing(this.p3);      
 
@@ -266,7 +268,7 @@ Play.prototype = {
       this.squatch1 = new Squatch(this.game, 300,1000, this.p3, 'right', 2000, 40);
                                     //Parameter: Projektil, Ausrichtung, Schussgeschwindigkeit, Leben
 
-      this.boss = new Boss(this.game, 900, 1000, this.p3, 2000, 400);
+      this.boss = new Boss(this.game, 900, 1000, this.p5, 2000, 400);
 
       // Add enemies to game
       this.game.add.existing(this.deathplant1);   

@@ -15,6 +15,7 @@ function Creep(game, x, y, p, creepFacing, creepPatrolTime, shootDelay, health, 
   this.health = health;
   this.isKilled = false;
   this.bulletSpeed = p.speed;
+  this.collisionDamage = 10;  // Wenn Spieler Gegner berührt
 
   this.animations.add('walkLeft', [0,1,2,3,4,5,6,7,8,9], 10, true);
   this.animations.add('walkRight', [10,11,12,13,14,15,16,17,18], 10, true);

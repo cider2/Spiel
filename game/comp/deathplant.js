@@ -14,6 +14,7 @@ function Deathplant(game, x, y, p, direction, shootDelay, health, frame) {
   this.health = health;
   this.isKilled = false;
   this.bulletSpeed = p.speed;
+  this.collisionDamage = 10;
 
   this.direction = direction;
   this.shootDelay = shootDelay;

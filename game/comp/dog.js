@@ -14,6 +14,7 @@ function Dog(game, x, y, dogFacing, dogPatrolTime, speedX, health, frame) {
   this.speedX = speedX;
   this.health = health;
   this.isKilled = false;
+  this.collisionDamage = 10;
 
   this.animations.add('walkLeft', [0,1,2,3,4,5,6,7], 10, true);
   this.animations.add('walkRight', [0,1,2,3,4,5,6,7], 10, true);

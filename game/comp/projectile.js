@@ -13,7 +13,7 @@ if (projectileIndex == 1)  {
 	this.damage = 10;
 	this.scale.x = 0.3;
 	this.scale.y = 0.3;
-	this.body.height = 5;
+	this.body.height = 5;	// Damit kann man bei jedem Projektil die Größe (Collision) einstellen
 	this.body.width = 5;
 	this.speed = 1500;
 }
@@ -41,6 +41,24 @@ else if (projectileIndex == 2)  {
 	this.body.height = 5;
 	this.body.width = 5;
 	this.speed = 1800;
+	this.alpha = 1.0;
+	//this.frame = 11;
+} else if (projectileIndex == 5) {
+	this.damage = 10;
+	this.scale.x = 1.0;
+	this.scale.y = 1.0;
+	this.body.height = 5;
+	this.body.width = 5;
+	this.speed = 1000;
+	this.alpha = 1.0;
+	//this.frame = 11;
+} else if (projectileIndex == 6) {
+	this.damage = 10;
+	this.scale.x = 3.0;
+	this.scale.y = 3.0;
+	this.body.height = 5;
+	this.body.width = 5;
+	this.speed = 1000;
 	this.alpha = 1.0;
 	//this.frame = 11;
 }

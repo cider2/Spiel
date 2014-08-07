@@ -14,6 +14,7 @@ function Squatch(game, x, y, p, direction, shootDelay, health, frame) {
   this.health = health;
   this.isKilled = false;
   this.bulletSpeed = p.speed + 300;
+  this.collisionDamage = 20;
 
   this.direction = direction;
   this.shootDelay = shootDelay;

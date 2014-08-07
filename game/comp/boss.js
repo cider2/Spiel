@@ -17,10 +17,13 @@ function Boss(game, x, y, p, shootDelay, health, frame) {
   this.health = health;
   this.isKilled = false;
   this.bulletSpeed = p.speed + 300;
+  this.collisionDamage = 50;
 
   this.shootDelay = shootDelay;
 
-  this.animations.add('shootLeft', [0,1,2,1,0], 10, false);
+  this.frame = 1;
+
+  this.animations.add('shootLeft', [1,2,1,0], 10, false);
 
   this.bulletTime = 1000;
 
@@ -59,9 +62,9 @@ Boss.prototype.shootLeft = function() {
       if (bullet)
       {
           //  And fire it
-       bullet.reset(this.x -40, this.y + 30);
+       bullet.reset(this.x -70, this.y);
        //bullet.body.velocity.x = -this.bulletSpeed;
-       this.game.physics.arcade.moveToObject(bullet,player,1000);
+       this.game.physics.arcade.moveToObject(bullet,player,this.bulletSpeed);
        this.bulletTime = this.game.time.now + this.shootDelay;
        this.animations.play('shootLeft');
       }
