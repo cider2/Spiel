@@ -18,7 +18,7 @@ function Teddy(game, x, y, frame) {
   };
   */
   this.x = 500;
-  this.y = 1000;
+  this.y = 100;
 
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   //this.game.physics.p2.enable(this);
@@ -40,7 +40,7 @@ function Teddy(game, x, y, frame) {
   this.animations.add('walkWeaponLeft', [106,105,104,103,102,101,100,99], 10, true);
   this.animations.add('jumpWeaponRight', [116,117,118,119], 40, false);
   this.animations.add('jumpWeaponLeft', [130,131,132,133], 40, false);
-  this.animations.add('fallRight', [34,35,36], 20, false);
+  //this.animations.add('fallRight', [34,35,36], 20, false);
   this.animations.add('walkShootingRight', [140,141,142,143,144,145,146,147,148], 10, true);
   this.animations.add('walkShootingLeft', [162,161,160,159,158,157,156,155,154], 10, true);
 
@@ -251,7 +251,7 @@ Teddy.prototype.shootRight = function() {
 	this.justShot = true;
 	this.muzzleFlash.x = this.body.x+52;
 	this.muzzleFlash.y = this.body.y+26;
-	this.muzzleFlash.alpha = 1.0;
+	this.muzzleFlash.alpha = 1.5;
 	this.game.time.events.add(Phaser.Timer.SECOND * 0.02, this.hideMuzzleFlash, this);
 },
 
@@ -259,7 +259,7 @@ Teddy.prototype.shootLeft = function() {
 	this.justShot = true;
 	this.muzzleFlash.x = this.body.x-52;
 	this.muzzleFlash.y = this.body.y+26;
-	this.muzzleFlash.alpha = 1.0;
+	this.muzzleFlash.alpha = 1.5;
 	this.game.time.events.add(Phaser.Timer.SECOND * 0.02, this.hideMuzzleFlash, this);
 },
 

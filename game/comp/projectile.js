@@ -1,17 +1,41 @@
 
-function Projectile(game, x, y, frame) {  
+function Projectile(game, x, y, projectileIndex,spriteImageParam,frame) {  
 
-Phaser.Sprite.call(this, game, x, y, 'projectile', frame);
+this.spriteImage = spriteImageParam;
 
+Phaser.Sprite.call(this, game, x, y, this.spriteImage, frame);
 
 this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
-this.body.collideWorldBounds = true;
+if (projectileIndex == 1)  {
+	this.damage = 10;
+	this.scale.x = 0.3;
+	this.scale.y = 0.3;
+	this.body.height = 5;
+	this.body.width = 5;
+	this.speed = 1500;
+}
 
-this.body.height = 10;
-this.body.width = 20;
-this.speedX = 200;
-this.speedY = 200;
+else if (projectileIndex == 2)  {
+	this.damage = 20;
+	this.scale.x = 0.1;
+	this.scale.y = 0.1;
+	this.body.height = 5;
+	this.body.width = 5;
+	this.speed = 100;
+
+} else {
+	this.damage = 20;
+	this.scale.x = 1;
+	this.scale.y = 1;
+	this.body.height = 5;
+	this.body.width = 5;
+	this.speed = 0;
+	
+}
+
+
+
 
 }
 
@@ -21,7 +45,11 @@ Projectile.prototype.constructor = Projectile;
 
 Projectile.prototype.update = function() {
 
+	this.animations.play('green');
 
+},
 
+Projectile.prototype.getSprite = function() {
+	return this.spriteImage;
 
 };
