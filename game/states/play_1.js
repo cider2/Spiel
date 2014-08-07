@@ -11,11 +11,11 @@ var bullet;
 var currentTeddyProjectile;
 var player;
 
-function Play() {
+function Play_1() {
 }
 
 
-Play.prototype = {
+Play_1.prototype = {
 
   preload: function() {
    
@@ -23,12 +23,12 @@ Play.prototype = {
 
   create: function() {
 
-      this.tilemap = this.game.add.tilemap('level1');
+      //this.tilemap = this.game.add.tilemap('level1');
       //this.tilemap = this.game.add.tilemap('tutorial');
-       this.tilemap.addTilesetImage("tileset");
+      // this.tilemap.addTilesetImage("tileset");
 
-      //this.tilemap = this.game.add.tilemap('smallMap_1');
-      //this.tilemap.addTilesetImage("smallTileset");
+      this.tilemap = this.game.add.tilemap('smallMap_1');
+      this.tilemap.addTilesetImage("smallTileset");
      
       //this.tilemap.setTileIndexCallback(8, this.hitFinishingLine, this);
       

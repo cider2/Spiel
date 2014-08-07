@@ -11,8 +11,10 @@
       this.game.load.tilemap('level1', 'assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
       this.game.load.tilemap('tutorial', 'assets/tutorial.json', null, Phaser.Tilemap.TILED_JSON);
       this.game.load.tilemap('laddermap', 'assets/laddertest.json', null, Phaser.Tilemap.TILED_JSON);
+      this.game.load.tilemap('smallMap_1', 'assets/smallMap_1.json', null, Phaser.Tilemap.TILED_JSON);
 
       this.load.image('tileset', "assets/tileset.png");
+      this.load.image('smallTileset', "assets/smallTileset.png");
       this.load.image('projectile1', "assets/projectile_1.png");
       this.load.image('projectile2', "assets/projectile_2.png");
       this.load.image('projectile3', "assets/projectile_3.png");
@@ -39,7 +41,7 @@
     },
 
     onLoadComplete: function() {
-        this.game.state.start('play');
+        this.game.state.start('play_1');
     }
 
   };
