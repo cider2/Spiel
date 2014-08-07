@@ -61,7 +61,7 @@ Boss.prototype.shootLeft = function() {
           //  And fire it
        bullet.reset(this.x -40, this.y + 30);
        //bullet.body.velocity.x = -this.bulletSpeed;
-       this.game.physics.arcade.moveToObject(bullet,player,120);
+       this.game.physics.arcade.moveToObject(bullet,player,1000);
        this.bulletTime = this.game.time.now + this.shootDelay;
        this.animations.play('shootLeft');
       }
