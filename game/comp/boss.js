@@ -1,6 +1,6 @@
-function Squatch(game, x, y, p, direction, shootDelay, health, frame) {  
+function Boss(game, x, y, p, shootDelay, health, frame) {  
   
-  Phaser.Sprite.call(this, game, x, y, 'squatch', frame);
+  Phaser.Sprite.call(this, game, x, y, 'boss', frame);
 
   this.anchor.setTo(0.5, 0.5);
   
@@ -8,82 +8,60 @@ function Squatch(game, x, y, p, direction, shootDelay, health, frame) {
 
   this.body.collideWorldBounds = true;
 
-  this.body.height = 60;
-  this.body.width = 60;
+  this.scale.x = 0.75;
+  this.scale.y = 0.75;
+
+  this.body.height = 300;
+  this.body.width = 300;
 
   this.health = health;
   this.isKilled = false;
   this.bulletSpeed = p.speed + 300;
 
-  this.direction = direction;
   this.shootDelay = shootDelay;
 
-  this.animations.add('shootLeft', [4,0], 10, false);
-  this.animations.add('shootRight', [3,2], 10, false);
+  this.animations.add('shootLeft', [0,1,2,1,0], 10, false);
 
   this.bulletTime = 1000;
 
-  this.direction = direction;
-
-  this.squatchBullets = this.game.add.group();
-  this.squatchBullets.enableBody = true;
-  this.squatchBullets.physicsBodyType = Phaser.Physics.ARCADE;
-  this.squatchBullets.createMultiple(30, p.getSprite());
-  this.squatchBullets.setAll('scale.x', p.scale.x);
-  this.squatchBullets.setAll('scale.y', p.scale.y);
-  this.squatchBullets.setAll('anchor.x', 0.5);
-  this.squatchBullets.setAll('anchor.y', 1);
-  this.squatchBullets.setAll('outOfBoundsKill', true);
-  this.squatchBullets.setAll('checkWorldBounds', true);
+  this.bossBullets = this.game.add.group();
+  this.bossBullets.enableBody = true;
+  this.bossBullets.physicsBodyType = Phaser.Physics.ARCADE;
+  this.bossBullets.createMultiple(30, p.getSprite());
+  this.bossBullets.setAll('scale.x', p.scale.x);
+  this.bossBullets.setAll('scale.y', p.scale.y);
+  this.bossBullets.setAll('anchor.x', 0.5);
+  this.bossBullets.setAll('anchor.y', 1);
+  this.bossBullets.setAll('outOfBoundsKill', true);
+  this.bossBullets.setAll('checkWorldBounds', true);
 
 }
 
-Squatch.prototype = Object.create(Phaser.Sprite.prototype);  
-Squatch.prototype.constructor = Squatch;
+Boss.prototype = Object.create(Phaser.Sprite.prototype);  
+Boss.prototype.constructor = Boss;
 
-Squatch.prototype.update = function() {
+Boss.prototype.update = function() {
 
   if (!this.isKilled) {
-    if (this.direction == 'right') {
-      this.shootRight();
-    }  else if (this.direction == 'left') {
       this.shootLeft();
-    }
-    
   }
   
 },
-        
-Squatch.prototype.shootRight = function() {
-  
-  
-  if (this.game.time.now > this.bulletTime) {
-      //  Grab the first bullet we can from the pool
-      var bullet = this.squatchBullets.getFirstExists(false);
 
-      if (bullet)
-      {
-          //  And fire it
-       bullet.reset(this.x, this.y + 30);
-       bullet.body.velocity.x = this.bulletSpeed;
-       this.bulletTime = this.game.time.now + this.shootDelay;
-       this.animations.play('shootRight');
-      }
-  }
-},
 
-Squatch.prototype.shootLeft = function() {
+Boss.prototype.shootLeft = function() {
 
   if (this.game.time.now > this.bulletTime)
                       {
       //  Grab the first bullet we can from the pool
-      var bullet = this.squatchBullets.getFirstExists(false);
+      var bullet = this.bossBullets.getFirstExists(false);
 
       if (bullet)
       {
           //  And fire it
        bullet.reset(this.x -40, this.y + 30);
-       bullet.body.velocity.x = -this.bulletSpeed;
+       //bullet.body.velocity.x = -this.bulletSpeed;
+       this.game.physics.arcade.moveToObject(bullet,player,120);
        this.bulletTime = this.game.time.now + this.shootDelay;
        this.animations.play('shootLeft');
       }
@@ -91,12 +69,12 @@ Squatch.prototype.shootLeft = function() {
 },
 
 
-Squatch.prototype.getBullets = function() {
-  return this.squatchBullets;
+Boss.prototype.getBullets = function() {
+  return this.bossBullets;
 },
 
 
-Squatch.prototype.killIt = function() {
+Boss.prototype.killIt = function() {
   
   this.isKilled = true;
   this.animations.stop();
@@ -106,7 +84,7 @@ Squatch.prototype.killIt = function() {
   this.game.time.events.add(Phaser.Timer.SECOND * 0.4, this.destroyIt, this);
 },
 
-Squatch.prototype.destroyIt = function() {
+Boss.prototype.destroyIt = function() {
   // make sprite invisible
   this.kill();
   // clear RAM

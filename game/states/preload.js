@@ -25,6 +25,7 @@
       this.game.load.spritesheet("dog", "assets/dog.png", 60,60);
       this.game.load.spritesheet("starSmall", "assets/star_small.png", 32,32);
       this.game.load.spritesheet("starBig", "assets/star_big.png", 64,64);
+      this.game.load.spritesheet("boss", "assets/boss.png", 400,400);
 
     },
 

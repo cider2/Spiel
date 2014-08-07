@@ -253,7 +253,7 @@ Play.prototype = {
 
       // Create enemies
       this.deathplant1 = new Deathplant(this.game, 700,1000, this.p3, 'down', 1000);
-      this.deathplant2 = new Deathplant(this.game, 900,1000, this.p3, 'up', 500);
+      this.deathplant2 = new Deathplant(this.game, 900,1000, this.p3, 'up', 500);   
 //      this.deathplant3 = new Deathplant(this.game, 1200,200, this.p3, 'up', 1000);
       //this.deathplant4 = new Deathplant(this.game, 1400,200, this.p3, 'down', 200);
 
@@ -266,6 +266,8 @@ Play.prototype = {
       this.squatch1 = new Squatch(this.game, 300,1000, this.p3, 'right', 2000, 40);
                                     //Parameter: Projektil, Ausrichtung, Schussgeschwindigkeit, Leben
 
+      this.boss = new Boss(this.game, 900, 1000, this.p3, 2000, 400);
+
       // Add enemies to game
       this.game.add.existing(this.deathplant1);   
       this.game.add.existing(this.deathplant2);   
@@ -274,6 +276,7 @@ Play.prototype = {
       this.game.add.existing(this.creep1);   
       this.game.add.existing(this.dog1);   
       this.game.add.existing(this.squatch1);   
+      this.game.add.existing(this.boss);   
 
       // Put all enemies in array for collision-check in update method
       this.enemies = []; 
@@ -284,6 +287,7 @@ Play.prototype = {
       this.enemies.push(this.creep1);
       this.enemies.push(this.dog1);
       this.enemies.push(this.squatch1);
+      this.enemies.push(this.boss);
 
 
       // Create stars
