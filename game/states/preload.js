@@ -16,11 +16,15 @@
       this.load.image('projectile1', "assets/projectile_1.png");
       this.load.image('projectile2', "assets/projectile_2.png");
       this.load.image('projectile3', "assets/projectile_3.png");
+      this.load.image('projectile4', "assets/projectile_4.png");
       this.game.load.spritesheet("teddy", "assets/spritesheet_v10.png", 100,100);
-      this.game.load.spritesheet("explosions", "assets/spritesheet_explosionen_edit.png", 64,64);
-      this.game.load.spritesheet("deathplant", "assets/deathplant_3.png", 100,100);
+      this.game.load.spritesheet("explosions", "assets/spritesheet_explosionen_v02.png", 64,64);
+      this.game.load.spritesheet("deathplant", "assets/deathplant.png", 100,100);
       this.game.load.spritesheet("creep", "assets/creep.png", 100,100);
-      this.game.load.spritesheet("squatch", "assets/squatch_2.png", 60,60);
+      this.game.load.spritesheet("squatch", "assets/squatch.png", 60,60);
+      this.game.load.spritesheet("dog", "assets/dog.png", 60,60);
+      this.game.load.spritesheet("starSmall", "assets/star_small.png", 32,32);
+      this.game.load.spritesheet("starBig", "assets/star_big.png", 64,64);
 
     },
 

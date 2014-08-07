@@ -5,7 +5,7 @@ var hasWeapon = true;
 var justFired = false;
 var justShot = false;
 
-function Teddy(game, x, y, frame) {  
+function Teddy(game, x, y, health, frame) {  
   
   Phaser.Sprite.call(this, game, x, y, 'teddy', frame);
 
@@ -17,8 +17,7 @@ function Teddy(game, x, y, frame) {
     rotation:0
   };
   */
-  this.x = 500;
-  this.y = 100;
+  this.health = health;
 
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   //this.game.physics.p2.enable(this);
@@ -275,4 +274,21 @@ Teddy.prototype.changeVelocity= function(y) {
 
 Teddy.prototype.crouch = function() {
 
-};
+},
+
+
+Teddy.prototype.killIt = function() {
+  
+  this.isKilled = true;
+  this.animations.stop();
+  this.game.add.tween(picture).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+  this.game.time.events.add(Phaser.Timer.SECOND * 1.0, this.destroyIt, this);
+},
+
+Teddy.prototype.destroyIt = function() {
+  // make sprite invisible
+  this.kill();
+  // clear RAM
+  this.destroy();
+  this.game.state.start('play');
+}

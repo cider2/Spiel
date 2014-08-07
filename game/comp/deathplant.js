@@ -1,4 +1,4 @@
-function Deathplant(game, x, y, p, direction, shootDelay, frame) {  
+function Deathplant(game, x, y, p, direction, shootDelay, health, frame) {  
   
   Phaser.Sprite.call(this, game, x, y, 'deathplant', frame);
 
@@ -11,9 +11,16 @@ function Deathplant(game, x, y, p, direction, shootDelay, frame) {
   this.body.height = 100;
   this.body.width = 100;
 
+  this.health = health;
+  this.isKilled = false;
+  this.bulletSpeed = p.speed;
+
   this.direction = direction;
   this.shootDelay = shootDelay;
 
+
+
+/*
   if (direction == 'up') {
     this.body.rotate = 0;
   }  else if (direction == 'right') {
@@ -23,10 +30,10 @@ function Deathplant(game, x, y, p, direction, shootDelay, frame) {
   }  else if (direction == 'left') {
     this.body.angle = 270;
   }
-  
+  */
 
-
-  this.animations.add('shoot', [1,4], 10, false);
+  this.animations.add('shootUp', [0,4], 10, false);
+  this.animations.add('shootDown', [2,3], 10, false);
 
   this.bulletTime = 1000;
 
@@ -48,16 +55,24 @@ Deathplant.prototype.constructor = Deathplant;
 
 Deathplant.prototype.update = function() {
 
-   if (this.direction == 'up') {
-    this.shootUp();
-  }  else if (this.direction == 'right') {
-    this.shootRight();
-  } else if (this.direction == 'down') {
-    this.shootDown();
-  }  else if (this.direction == 'left') {
-    this.shootLeft();
+  if (this.health <= 0) {
+    this.killIt();
   }
+
+  if (!this.isKilled) {
+
+    if (this.direction == 'up') {
+      this.shootUp();
+    } //  else if (this.direction == 'right') {
+      //  this.shootRight(); }
+    else if (this.direction == 'down') {
+      this.shootDown();
+    } // else if (this.direction == 'left') {
+    //  this.shootLeft();
+  //  }
   
+  }
+
 
 },
 
@@ -75,7 +90,7 @@ Deathplant.prototype.shootRight = function() {
       {
           //  And fire it
        bullet.reset(this.x, this.y - 40);
-       bullet.body.velocity.x = 2000;
+       bullet.body.velocity.x = this.bulletSpeed;
        this.bulletTime = this.game.time.now + this.shootDelay;
        this.animations.play('shoot');
       }
@@ -94,7 +109,7 @@ Deathplant.prototype.shootLeft = function() {
       {
           //  And fire it
        bullet.reset(this.x, this.y - 40);
-       bullet.body.velocity.x = -2000;
+       bullet.body.velocity.x = -this.bulletSpeed;
        this.bulletTime = this.game.time.now + this.shootDelay;
        this.animations.play('shoot');
       }
@@ -113,9 +128,9 @@ Deathplant.prototype.shootUp = function() {
       {
           //  And fire it
        bullet.reset(this.x, this.y - 40);
-       bullet.body.velocity.y = 2000;
+       bullet.body.velocity.y = -this.bulletSpeed;
        this.bulletTime = this.game.time.now + this.shootDelay;
-       this.animations.play('shoot');
+       this.animations.play('shootUp');
       }
   }
 },
@@ -132,14 +147,31 @@ Deathplant.prototype.shootDown = function() {
       {
           //  And fire it
        bullet.reset(this.x, this.y - 40);
-       bullet.body.velocity.y = -2000;
+       bullet.body.velocity.y = this.bulletSpeed;
        this.bulletTime = this.game.time.now + this.shootDelay;
-       this.animations.play('shoot');
+       this.animations.play('shootDown');
       }
   }
 },
 
 Deathplant.prototype.getBullets = function() {
   return this.deathplantBullets;
-}
+},
 
+
+Deathplant.prototype.killIt = function() {
+  
+  this.isKilled = true;
+  this.animations.stop();
+  this.loadTexture('explosions', 0);
+  this.animations.add('explode', [35,36,37,38,39,40,41,42], 28, false);
+  this.animations.play('explode');
+  this.game.time.events.add(Phaser.Timer.SECOND * 0.4, this.destroyIt, this);
+},
+
+Deathplant.prototype.destroyIt = function() {
+  // make sprite invisible
+  this.kill();
+  // clear RAM
+  this.destroy();
+}

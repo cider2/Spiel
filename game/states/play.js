@@ -6,7 +6,7 @@ var isFalling = false;
 var isShooting = false;
 var firstTimeShooting = true;
 var justFired = true;
-var bulletTime = 2000;
+var bulletTime = 100;
 var bullet;
 var currentTeddyProjectile;
 var player;
@@ -42,7 +42,7 @@ Play.prototype = {
       this.game.physics.enable(this, Phaser.Physics.ARCADE);
       this.game.physics.arcade.gravity.y = 500;
 
-  	  this.player = new Teddy(this.game, 0,0);
+  	  this.player = new Teddy(this.game, 500, 1000, 100);
       player = this.player;
       this.game.add.existing(this.player);      
       this.game.camera.follow(this.player);
@@ -55,12 +55,13 @@ Play.prototype = {
 
       this.p1 = new Projectile(this.game, 0,0, 1,'projectile1');
       this.p2 = new Projectile(this.game, 0,0, 2,'projectile2');
-      this.p3 = new Projectile(this.game, 0,0, 3,'explosions');
+      this.p3 = new Projectile(this.game, 0,0, 3,'projectile3');
+      this.p4 = new Projectile(this.game, 0,0, 4,'projectile4');
 
       //this.game.add.existing(this.p3);      
 
 
-      this.loadTeddyBullets(this.p1);
+      this.loadTeddyBullets(this.p4);
 
       this.addEnemies();
       this.enemies;
@@ -177,16 +178,16 @@ Play.prototype = {
               isShooting = true;
               if (shootFacing == 'right') {
                   if (!this.player.justShot) {
-                      this.player.shootRight(); 
                       if (this.game.time.now > bulletTime)
                       {
+                      this.player.shootRight(); 
                       //  Grab the first bullet we can from the pool
                       bullet = this.bullets.getFirstExists(false);
 
                         if (bullet)
                         {
                           //  And fire it
-                          bullet.reset(this.player.x+54, this.player.y - 6);
+                          bullet.reset(this.player.x+84, this.player.y + 10);
                           bullet.body.velocity.x = this.currentTeddyProjectile.speed;
                           bulletTime = this.game.time.now + 200;
                         }
@@ -194,20 +195,19 @@ Play.prototype = {
                   }
               } else if (shootFacing == 'left') {
                   if (!this.player.justShot) {
-                     this.player.shootLeft();
-                     if (this.game.time.now > bulletTime)
-                        {
+                     if (this.game.time.now > bulletTime) {
+                       this.player.shootLeft();
                       //  Grab the first bullet we can from the pool
                         bullet = this.bullets.getFirstExists(false);
 
                         if (bullet)
                         {
                           //  And fire it
-                          bullet.reset(this.player.x-54, this.player.y - 6);
+                          bullet.reset(this.player.x-84, this.player.y + 10);
                           bullet.body.velocity.x = -this.currentTeddyProjectile.speed;
                           bulletTime = this.game.time.now + 200;
                         }
-                      } 
+                      }
                   }
               }
           } 
@@ -250,28 +250,55 @@ Play.prototype = {
 
 
   addEnemies: function() {
-      this.deathplant1 = new Deathplant(this.game, 700,200, this.p3, 'right', 1000);
-      this.deathplant2 = new Deathplant(this.game, 1000,200, this.p3, 'left', 500);
+
+      // Create enemies
+      this.deathplant1 = new Deathplant(this.game, 700,1000, this.p3, 'down', 1000);
+      this.deathplant2 = new Deathplant(this.game, 900,1000, this.p3, 'up', 500);
 //      this.deathplant3 = new Deathplant(this.game, 1200,200, this.p3, 'up', 1000);
       //this.deathplant4 = new Deathplant(this.game, 1400,200, this.p3, 'down', 200);
 
-      this.creep1 = new Creep(this.game, 600,200, this.p3, 'left', 3);
+      this.creep1 = new Creep(this.game, 600,1000, this.p3, 'left', 3, 500, 30);  
+                                      //Parameter: Projektil, Ausrichtung, PatrolTime (Zeit bis zum Wechseln der Laufrichtung), Schussgeschwindigkeit, Leben
 
+      this.dog1 = new Dog(this.game, 800,1000, 'left', 1, 500, 10);
+                                    //Parameter: Ausrichtung, PatrolTime, Laufgeschwindigkeit, Leben
+
+      this.squatch1 = new Squatch(this.game, 300,1000, this.p3, 'right', 2000, 40);
+                                    //Parameter: Projektil, Ausrichtung, Schussgeschwindigkeit, Leben
+
+      // Add enemies to game
       this.game.add.existing(this.deathplant1);   
       this.game.add.existing(this.deathplant2);   
    //   this.game.add.existing(this.deathplant3);   
    //   this.game.add.existing(this.deathplant4);   
       this.game.add.existing(this.creep1);   
+      this.game.add.existing(this.dog1);   
+      this.game.add.existing(this.squatch1);   
 
-      // Put all enemies in array
+      // Put all enemies in array for collision-check in update method
       this.enemies = []; 
       this.enemies.push(this.deathplant1);
       this.enemies.push(this.deathplant2);
    //   this.enemies.push(this.deathplant3);
    //   this.enemies.push(this.deathplant4);
       this.enemies.push(this.creep1);
+      this.enemies.push(this.dog1);
+      this.enemies.push(this.squatch1);
 
 
+      // Create stars
+      this.star1 = new Starsmall(this.game, 500, 1000);
+      this.star2 = new Starsmall(this.game, 550, 700);
+      this.star3 = new Starsmall(this.game, 600, 700);
+      this.star4 = new Starsmall(this.game, 650, 700);
+      this.starBig1 = new Starbig(this.game, 700, 600);
+
+      // Add stars to game
+      this.game.add.existing(this.star1); 
+      this.game.add.existing(this.star2); 
+      this.game.add.existing(this.star3); 
+      this.game.add.existing(this.star4); 
+      this.game.add.existing(this.starBig1); 
   },
 
   activateEnemies: function() {
