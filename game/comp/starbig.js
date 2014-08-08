@@ -4,8 +4,8 @@ function Starbig(game, x, y, frame) {
 
   this.anchor.setTo(0.5, 0.5);
   
-  this.game.physics.enable(this, Phaser.Physics.ARCADE);
-
+  //this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.game.physics.enable(this, Phaser.Physics.P2JS);
   this.body.collideWorldBounds = true;
 
   this.body.height = 32;

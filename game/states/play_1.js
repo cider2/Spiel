@@ -40,11 +40,38 @@ Play_1.prototype = {
 
       
       //this.tilemap.setCollisionByExclusion([530,531,532,533,557,558,559,560,584,885,886,887],true,this.layer);
-      this.tilemap.setCollisionByExclusion([193,194,195,196,208,209,210,211,224,225,226,227],true,this.layer);
+      //this.tilemap.setCollisionByExclusion([193,194,195,196,208,209,210,211,224,225,226,227],true,this.layer);
+      this.tilemap.setCollisionBetween(1,168,true);
 
-      this.game.physics.startSystem(Phaser.Physics.ARCADE);
-      this.game.physics.enable(this, Phaser.Physics.ARCADE);
-      this.game.physics.arcade.gravity.y = 500;
+      //this.game.physics.startSystem(Phaser.Physics.ARCADE);
+      //this.game.physics.enable(this, Phaser.Physics.ARCADE);
+      //this.game.physics.arcade.gravity.y = 500;
+
+      this.game.physics.startSystem(Phaser.Physics.P2JS);
+      this.game.physics.p2.setImpactEvents(true);
+      this.collisionArray = this.game.physics.p2.convertTilemap(this.tilemap, this.layer);
+      this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      this.worldCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      this.enemyCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      this.starCollisiongroup = this.game.physics.p2.createCollisionGroup();
+      this.projectileCollisionGroup = this.game.physics.p2.createCollisionGroup();
+
+      this.game.physics.p2.setBoundsToWorld(true, true, true, true, false);
+      this.game.physics.p2.gravity.y = 500;
+      for(var i = 0; i<this.collisionArray.length; i++){
+
+        this.collisionTile = this.collisionArray[i];
+        this.collisionTile.setCollisionGroup(this.worldCollisionGroup);
+        this.collisionTile.collides(this.playerCollisionGroup);
+        this.collisionTile.collides(this.enemyCollisionGroup);
+        //this.game.physics.p2.enable(this.collisionTile);
+        }
+
+
+
+        this.game.physics.p2.frameRate = 1/25;
+
+
 
   	  this.player = new Teddy(this.game, 160, 160, 100);
       player = this.player;
@@ -52,6 +79,13 @@ Play_1.prototype = {
       this.game.camera.follow(this.player);
       this.game.camera.deadzone = new Phaser.Rectangle(600,400,1,1);
       this.player.body.fixedRotation = true;
+      this.game.physics.enable(this.player, Phaser.Physics.P2JS);
+      this.player.body.setCollisionGroup(this.playerCollisionGroup);
+      this.player.body.collides(this.enemyCollisionGroup);
+      this.player.body.collides(this.worldCollisionGroup,this.player.isBlockedDown, this.player);
+      
+
+
 
       this.cursors = this.input.keyboard.createCursorKeys();
       this.spacebar = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -63,6 +97,14 @@ Play_1.prototype = {
       this.p4 = new Projectile(this.game, 0,0, 4,'projectile4');
       this.p5 = new Projectile(this.game, 0,0, 5,'projectile5');
       this.p6 = new Projectile(this.game, 0,0, 6,'projectile6');
+      this.game.physics.p2.enable([this.p1,this.p2,this.p3,this.p4,this.p5,this.p6]);
+      this.projectiles = [this.p1,this.p2,this.p3,this.p4,this.p5,this.p6];
+      for (i=0; i<this.projectiles.lenght; i++){
+        this.proj = this.projectile[i];
+        this.proj.body.setCollisionGroup(projectileCollisionGroup);
+        this.proj.body.collides(this.playerCollisionGroup, this.collisionDamage, this);
+
+      }
 
       //this.game.add.existing(this.p3);      
 
@@ -85,13 +127,19 @@ Play_1.prototype = {
   },
 
   update: function() {
-      this.game.physics.arcade.collide(this.layer,this.player);
-      for (var i=0; i<this.enemies.length; i++) {
+      
+
+      //this.player.body.collides(this.worldCollisionGroup,this.player.isBlockedDown, this.player);
+      //this.player.body.onBeginContact.add(this.worldCollisionGroup,this.player.isBlockedDown, this.player);
+      //this.game.physics.arcade.collide(this.layer,this.player);
+      
+      /*for (var i=0; i<this.enemies.length; i++) {
           this.enemy = this.enemies[i];
           this.game.physics.arcade.collide(this.layer,this.enemy);
-      } 
+      } */
+     
       this.checkKeys();
-      if (!this.player.body.onFloor()) {
+      if (!this.player.onFloor()) {
          this.player.speed = 160;
       }
       else {
@@ -129,13 +177,13 @@ Play_1.prototype = {
 
            ) {
 
-            this.game.physics.arcade.gravity.y = 0;
+            this.game.physics.p2.gravity.y = 0;
             isLadder = true;
             this.player.speedX = 50;
             
          }
 
-     /*    if (this.player.body.onFloor() || !isLadder) {
+     /*    if (this.player.onFloor() || !isLadder) {
               isFalling = false;
             } else {
               isFalling = true;
@@ -143,7 +191,7 @@ Play_1.prototype = {
          */
 
       } catch (err) {
-            this.game.physics.arcade.gravity.y = 500;
+            this.game.physics.p2.gravity.y = 500;
           /*  if (isLadder) {
               this.player.doNothing();
             } */
@@ -151,12 +199,12 @@ Play_1.prototype = {
             this.player.speedX = 200;
       }
 
-      if (!this.player.body.onFloor() && this.player.body.velocity.y > 0 && !isLadder) {
+      if (!this.player.onFloor() && this.player.body.velocity.y > 0 && !isLadder) {
          isFalling = true;
       } else {
          isFalling = false;
       }
-      if (this.player.body.onFloor()) {
+      if (this.player.onFloor()) {
         facing = shootFacing;
       }
 
@@ -181,7 +229,7 @@ Play_1.prototype = {
        }
              
        else if (this.cursors.up.isDown) {
-          if (this.player.body.onFloor()) { 
+          if (this.player.onFloor()) { 
             this.player.doNothing();
           }
           if (isLadder) {
@@ -192,7 +240,7 @@ Play_1.prototype = {
        } 
 
        else if (this.cursors.down.isDown) { 
-          if (this.player.body.onFloor()) {
+          if (this.player.onFloor()) {
               this.player.crouch();
           }
           if (isLadder) {
@@ -295,10 +343,17 @@ Play_1.prototype = {
 
       this.dog1 = new Dog(this.game, 800,400, 'left', 1, 500, 10);
                                     //Parameter: Ausrichtung, PatrolTime, Laufgeschwindigkeit, Leben
+      this.dog1.body.setCollisionGroup(this.enemyCollisionGroup);
+      this.dog1.body.collides(this.worldCollisionGroup);
+      this.dog1.body.collides(this.playerCollisionGroup, this.collisionDamage, this);
+      
 
       this.squatch1 = new Squatch(this.game, 900,250, this.p3, 'left', 2000, 40);
                                     //Parameter: Projektil, Ausrichtung, Schussgeschwindigkeit, Leben
-
+      this.game.physics.p2.enable([this.squatch1,this.dog1]);
+      this.squatch1.body.setCollisionGroup(this.enemyCollisionGroup);
+      this.squatch1.body.collides(this.worldCollisionGroup);
+      this.squatch1.body.collides(this.playerCollisionGroup, this.collisionDamage, this);
       //this.boss = new Boss(this.game, 900, 1000, this.p5, 2000, 400);
 
       // Add enemies to game
@@ -325,10 +380,17 @@ Play_1.prototype = {
 
       // Create stars
       this.star1 = new Starsmall(this.game, 500, 100);
+      //this.star1.body.setCollisionGroup(this.starCollisionGroup);
       this.star2 = new Starsmall(this.game, 550, 100);
       this.star3 = new Starsmall(this.game, 600, 100);
       this.star4 = new Starsmall(this.game, 650, 100);
       this.starBig1 = new Starbig(this.game, 1400, 100);
+      this.game.physics.p2.enable([this.star1,this.star2,this.star3,this.star4,this.starBig1]);
+      this.star1.body.data.gravityScale = 0;
+      this.star2.body.data.gravityScale = 0;
+      this.star3.body.data.gravityScale = 0;
+      this.star4.body.data.gravityScale = 0;
+      this.starBig1.body.data.gravityScale = 0;
 
       // Add stars to game
       this.game.add.existing(this.star1); 

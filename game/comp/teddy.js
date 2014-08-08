@@ -4,6 +4,7 @@ var shootFacing = 'right';
 var hasWeapon = true;
 var justFired = false;
 var justShot = false;
+var blockedDown = true;
 
 function Teddy(game, x, y, health, frame) {  
   
@@ -19,7 +20,7 @@ function Teddy(game, x, y, health, frame) {
   */
   this.health = health;
 
-  this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.game.physics.enable(this, Phaser.Physics.P2JS);
   //this.game.physics.p2.enable(this);
   this.body.collideWorldBounds = true;
 
@@ -62,6 +63,20 @@ Teddy.prototype.update = function() {
 
 },
 
+Teddy.prototype.isBlockedDown = function(){
+this.blockedDown = true;
+return this.blockedDown;
+},
+Teddy.prototype.isNotBlockedDown = function(){
+this.blockedDown = false;
+return this.blockedDown;
+},
+Teddy.prototype.onFloor = function(){
+  console.log(this.blockedDown);
+  return this.blockedDown;
+
+},
+
 Teddy.prototype.goLeft = function() {
 	 this.body.velocity.x = -this.speedX;
      facing = 'left';
@@ -86,7 +101,7 @@ Teddy.prototype.goLeft = function() {
           		this.animations.play('walkShootingLeft');
           		//this.shootLeft();
           }
-          else if (this.body.onFloor()) {
+          else if (this.onFloor()) {
           	if (hasWeapon) {
           		this.animations.play('walkWeaponLeft');
           	} else {
@@ -120,7 +135,7 @@ Teddy.prototype.goRight = function() {
           	 //this.shootRight();
           }
 
-          else if (this.body.onFloor()) {
+          else if (this.onFloor()) {
           	if (hasWeapon) {
           		this.animations.play('walkWeaponRight');
           	} else {
@@ -169,7 +184,7 @@ Teddy.prototype.doNothing = function() {
 
       //  if (facing != 'idle') {
            // this.animations.stop();
-    if (this.body.onFloor()) {
+    if (this.onFloor()) {
        if (facing == 'left')
 	   {
 	   		if (hasWeapon) {
@@ -227,17 +242,18 @@ Teddy.prototype.doNothing = function() {
 
 
 Teddy.prototype.jump = function() {
-		if (this.body.onFloor()) {
+		if (this.onFloor()) {
  			this.body.velocity.y = -300;
+      this.isNotBlockedDown();
 		}
-		if (this.body.onFloor() && facing == 'right') { 
+		if (this.onFloor() && facing == 'right') { 
 			if (hasWeapon) {
 				this.animations.play('jumpWeaponRight');
 			} else {
 				this.animations.play('jumpRight');
 			}
 		}
-		else if (this.body.onFloor() && facing == 'left') {
+		else if (this.onFloor() && facing == 'left') {
 			if (hasWeapon) {
 				this.animations.play('jumpWeaponLeft');
 			} else {
