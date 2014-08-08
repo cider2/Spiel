@@ -4,10 +4,10 @@ function Starsmall(game, x, y, frame) {
 
   this.anchor.setTo(0.5, 0.5);
   
-  this.game.physics.enable(this, Phaser.Physics.P2JS);
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
   this.body.collideWorldBounds = true;
-  this.body.gravity.y = 0;
+
   this.body.height = 32;
   this.body.width = 32;
   this.isKilled = false;

@@ -40,37 +40,11 @@ Play_2.prototype = {
 
       
       //this.tilemap.setCollisionByExclusion([530,531,532,533,557,558,559,560,584,885,886,887],true,this.layer);
-      //this.tilemap.setCollisionByExclusion([193,194,195,196,208,209,210,211,224,225,226,227],true,this.layer);
-      this.tilemap.setCollisionBetween(1,168,true);
+      this.tilemap.setCollisionByExclusion([193,194,195,196,208,209,210,211,224,225,226,227],true,this.layer);
 
-      //this.game.physics.startSystem(Phaser.Physics.ARCADE);
-      //this.game.physics.enable(this, Phaser.Physics.ARCADE);
-      //this.game.physics.arcade.gravity.y = 500;
-
-      this.game.physics.startSystem(Phaser.Physics.P2JS);
-      this.game.physics.p2.setImpactEvents(true);
-      this.collisionArray = this.game.physics.p2.convertTilemap(this.tilemap, this.layer);
-      this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
-      this.worldCollisionGroup = this.game.physics.p2.createCollisionGroup();
-      this.enemyCollisionGroup = this.game.physics.p2.createCollisionGroup();
-      this.starCollisionGroup = this.game.physics.p2.createCollisionGroup();
-      this.projectileCollisionGroup = this.game.physics.p2.createCollisionGroup();
-
-
-      this.game.physics.p2.setBoundsToWorld(true, true, true, true, false);
-      this.game.physics.p2.gravity.y = 500;
-      for(var i = 0; i<this.collisionArray.length; i++){
-
-        this.collisionTile = this.collisionArray[i];
-        this.collisionTile.setCollisionGroup(this.worldCollisionGroup);
-        this.collisionTile.collides(this.playerCollisionGroup);
-        this.collisionTile.collides(this.enemyCollisionGroup);
-        //this.game.physics.p2.enable(this.collisionTile);
-        }
-
-
-          this.game.physics.p2.frameRate = 1/25;
-
+      this.game.physics.startSystem(Phaser.Physics.ARCADE);
+      this.game.physics.enable(this, Phaser.Physics.ARCADE);
+      this.game.physics.arcade.gravity.y = 500;
 
   	  this.player = new Teddy(this.game, 160, 160, 100);
       player = this.player;
@@ -78,13 +52,6 @@ Play_2.prototype = {
       this.game.camera.follow(this.player);
       this.game.camera.deadzone = new Phaser.Rectangle(600,400,1,1);
       this.player.body.fixedRotation = true;
-      this.game.physics.enable(this.player, Phaser.Physics.P2JS);
-      this.player.body.setCollisionGroup(this.playerCollisionGroup);
-      this.player.body.collides(this.enemyCollisionGroup);
-      this.player.body.collides(this.worldCollisionGroup,this.player.isBlockedDown, this.player);
-
-
-
 
       this.cursors = this.input.keyboard.createCursorKeys();
       this.spacebar = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -118,18 +85,13 @@ Play_2.prototype = {
   },
 
   update: function() {
-      //this.game.physics.arcade.collide(this.layer,this.player);
-      
-     
-
-
-      /*for (var i=0; i<this.enemies.length; i++) {
+      this.game.physics.arcade.collide(this.layer,this.player);
+      for (var i=0; i<this.enemies.length; i++) {
           this.enemy = this.enemies[i];
           this.game.physics.arcade.collide(this.layer,this.enemy);
-      } */
-
+      } 
       this.checkKeys();
-      if (!this.player.onFloor()) {
+      if (!this.player.body.onFloor()) {
          this.player.speed = 160;
       }
       else {
@@ -167,13 +129,13 @@ Play_2.prototype = {
 
            ) {
 
-            this.game.physics.p2.gravity.y = 0;
+            this.game.physics.arcade.gravity.y = 0;
             isLadder = true;
             this.player.speedX = 50;
             
          }
 
-     /*    if (this.player.onFloor() || !isLadder) {
+     /*    if (this.player.body.onFloor() || !isLadder) {
               isFalling = false;
             } else {
               isFalling = true;
@@ -181,7 +143,7 @@ Play_2.prototype = {
          */
 
       } catch (err) {
-            this.game.physics.p2.gravity.y = 500;
+            this.game.physics.arcade.gravity.y = 500;
           /*  if (isLadder) {
               this.player.doNothing();
             } */
@@ -189,12 +151,12 @@ Play_2.prototype = {
             this.player.speedX = 200;
       }
 
-      if (!this.player.onFloor() && this.player.body.velocity.y > 0 && !isLadder) {
+      if (!this.player.body.onFloor() && this.player.body.velocity.y > 0 && !isLadder) {
          isFalling = true;
       } else {
          isFalling = false;
       }
-      if (this.player.onFloor()) {
+      if (this.player.body.onFloor()) {
         facing = shootFacing;
       }
 
@@ -219,7 +181,7 @@ Play_2.prototype = {
        }
              
        else if (this.cursors.up.isDown) {
-          if (this.player.onFloor()) { 
+          if (this.player.body.onFloor()) { 
             this.player.doNothing();
           }
           if (isLadder) {
@@ -230,7 +192,7 @@ Play_2.prototype = {
        } 
 
        else if (this.cursors.down.isDown) { 
-          if (this.player.onFloor()) {
+          if (this.player.body.onFloor()) {
               this.player.crouch();
           }
           if (isLadder) {
@@ -327,24 +289,10 @@ Play_2.prototype = {
       this.deathplant2 = new Deathplant(this.game, 750,400, this.p3, 'up', 500);   
 //      this.deathplant3 = new Deathplant(this.game, 1200,200, this.p3, 'up', 1000);
       //this.deathplant4 = new Deathplant(this.game, 1400,200, this.p3, 'down', 200);
-      this.deathplant1.body.setCollisionGroup(this.enemyCollisionGroup);
-      this.deathplant2.body.setCollisionGroup(this.enemyCollisionGroup);
-      this.deathplant1.body.collides(this.worldCollisionGroup);
-      this.deathplant2.body.collides(this.worldCollisionGroup);
-      this.deathplant1.body.collides(this.playerCollisionGroup, this.collisionDamage, this);
-      this.deathplant2.body.collides(this.playerCollisionGroup, this.collisionDamage, this); 
-      this.creep1 = new Creep(this.game, 400,200, this.p3, 'left', 2, 500, 30);  
-      this.creep2 = new Creep(this.game, 1400,200, this.p3, 'left', 4, 250, 50);  
-                                      //Parameter: Projektil, Ausrichtung, PatrolTime (Zeit bis zum Wechseln der Laufrichtung), Schussgeschwindigkeit, Leben
 
-      this.game.physics.p2.enable([this.deathplant1,this.deathplant2,this.creep1,this.creep2]);
-      this.creep1.body.setCollisionGroup(this.enemyCollisionGroup);
-      this.creep2.body.setCollisionGroup(this.enemyCollisionGroup);
-      
-      this.creep1.body.collides(this.worldCollisionGroup);
-      this.creep2.body.collides(this.worldCollisionGroup);
-      this.creep1.body.collides(this.playerCollisionGroup, this.collisionDamage, this);
-      this.creep2.body.collides(this.playerCollisionGroup, this.collisionDamage, this); 
+      this.creep1 = new Creep(this.game, 1200,400, this.p3, 'left', 2, 500, 30);  
+      this.creep2 = new Creep(this.game, 1600,200, this.p3, 'left', 4, 250, 50);  
+                                      //Parameter: Projektil, Ausrichtung, PatrolTime (Zeit bis zum Wechseln der Laufrichtung), Schussgeschwindigkeit, Leben
 
       this.dog1 = new Dog(this.game, 800,400, 'left', 1, 500, 10);
                                     //Parameter: Ausrichtung, PatrolTime, Laufgeschwindigkeit, Leben
@@ -384,12 +332,6 @@ Play_2.prototype = {
       this.star3 = new Starsmall(this.game, 600, 100);
       this.star4 = new Starsmall(this.game, 650, 100);
       this.starBig1 = new Starbig(this.game, 2300, 100);
-      this.game.physics.p2.enable([this.star1,this.star2,this.star3,this.star4,this.starBig1]);
-      this.star1.body.data.gravityScale = 0;
-      this.star2.body.data.gravityScale = 0;
-      this.star3.body.data.gravityScale = 0;
-      this.star4.body.data.gravityScale = 0;
-      this.starBig1.body.data.gravityScale = 0;
 
       // Add stars to game
       this.game.add.existing(this.star1); 

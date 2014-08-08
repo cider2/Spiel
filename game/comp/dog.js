@@ -4,7 +4,7 @@ function Dog(game, x, y, dogFacing, dogPatrolTime, speedX, health, frame) {
 
   this.anchor.setTo(0.5, 0.5);
   
-  this.game.physics.enable(this, Phaser.Physics.P2JS);
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
   this.body.collideWorldBounds = true;
 

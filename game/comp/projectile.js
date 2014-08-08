@@ -5,7 +5,7 @@ this.spriteImage = spriteImageParam;
 
 Phaser.Sprite.call(this, game, x, y, this.spriteImage, frame);
 
-this.game.physics.enable(this, Phaser.Physics.P2JS);
+this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
 this.anchor.setTo(0.5, 0.5);
 

@@ -4,8 +4,8 @@ function Creep(game, x, y, p, creepFacing, creepPatrolTime, shootDelay, health, 
 
   this.anchor.setTo(0.5, 0.5);
   
-  //this.game.physics.enable(this, Phaser.Physics.ARCADE);
-  this.game.physics.enable(this, Phaser.Physics.P2JS);
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
+
   this.body.collideWorldBounds = true;
 
   this.body.height = 100;
